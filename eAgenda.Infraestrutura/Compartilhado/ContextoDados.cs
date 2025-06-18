@@ -1,5 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
+using eAgenda.Dominio.ModuloTarefa;
 
 namespace eAgenda.Infraestrura.Compartilhado;
 
@@ -8,8 +9,11 @@ public class ContextoDados
     private string pastaArmazenamento = "C:\\temp";
     private string arquivoArmazenamento = "dados-e-agenda.json";
 
+    public List<Tarefa> Tarefas { get; set; }
+
     public ContextoDados()
     {
+        Tarefas = new List<Tarefa>();
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -53,5 +57,7 @@ public class ContextoDados
         )!;
 
         if (contextoArmazenado == null) return;
+
+        Tarefas = contextoArmazenado.Tarefas;
     }
 }

@@ -19,11 +19,10 @@ public class Program
             app.UseHsts();
         }
 
+        app.UseAntiforgery();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-
         app.UseRouting();
-
         app.UseAuthorization();
 
         app.MapControllerRoute(

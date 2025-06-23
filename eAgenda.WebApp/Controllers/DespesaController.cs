@@ -1,8 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
-using eAgenda.Infraestrura.Compartilhado;
-using eAgenda.Infraestrutura.ModuloCategoria;
-using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -13,15 +10,16 @@ namespace eAgenda.WebApp.Controllers;
 [Route("despesas")]
 public class DespesaController : Controller
 {
-    private readonly ContextoDados contexto;
     private readonly IRepositorioDespesa repositorioDespesa;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public DespesaController()
+    public DespesaController(
+        IRepositorioDespesa repositorioDespesa, 
+        IRepositorioCategoria repositorioCategoria
+    )
     {
-        contexto = new ContextoDados(true);
-        repositorioDespesa = new RepositorioDespesa(contexto);
-        repositorioCategoria = new RepositorioCategoria(contexto);
+        this.repositorioDespesa = repositorioDespesa;
+        this.repositorioCategoria = repositorioCategoria;
     }
 
     [HttpGet]

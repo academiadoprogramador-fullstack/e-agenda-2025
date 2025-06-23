@@ -1,3 +1,11 @@
+using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloDespesa;
+using eAgenda.Dominio.ModuloTarefa;
+using eAgenda.Infraestrura.Compartilhado;
+using eAgenda.Infraestrutura.ModuloCategoria;
+using eAgenda.Infraestrutura.ModuloDespesa;
+using eAgenda.Infraestrutura.ModuloTarefa;
+
 namespace eAgenda.WebApp;
 
 public class Program
@@ -6,28 +14,21 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        // Add services to the container.
         builder.Services.AddControllersWithViews();
 
-        var app = builder.Build();
+        builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));
+        builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
+        builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();
+        builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefa>();
 
-        // Configure the HTTP request pipeline.
-        if (!app.Environment.IsDevelopment())
-        {
-            app.UseExceptionHandler("/Home/Error");
-            // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
-            app.UseHsts();
-        }
+        var app = builder.Build();
 
         app.UseAntiforgery();
         app.UseHttpsRedirection();
         app.UseStaticFiles();
-        app.UseRouting();
-        app.UseAuthorization();
 
-        app.MapControllerRoute(
-            name: "default",
-            pattern: "{controller=Home}/{action=Index}/{id?}");
+        app.UseRouting();
+        app.MapDefaultControllerRoute();
 
         app.Run();
     }

@@ -1,6 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
-using eAgenda.Infraestrura.Compartilhado;
-using eAgenda.Infraestrutura.ModuloCategoria;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +8,11 @@ namespace eAgenda.WebApp.Controllers;
 [Route("categorias")]
 public class CategoriaController : Controller
 {
-    private readonly ContextoDados contexto;
     private readonly IRepositorioCategoria repositorioCategoria;
 
-    public CategoriaController()
+    public CategoriaController(IRepositorioCategoria repositorioCategoria)
     {
-        contexto = new ContextoDados(true);
-        repositorioCategoria = new RepositorioCategoria(contexto);
+        this.repositorioCategoria = repositorioCategoria;
     }
 
     [HttpGet]

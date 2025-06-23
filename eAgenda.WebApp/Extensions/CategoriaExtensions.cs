@@ -14,7 +14,8 @@ public static class CategoriaExtensions
     {
         return new DetalhesCategoriaViewModel(
                 categoria.Id,
-                categoria.Titulo
+                categoria.Titulo,
+                categoria.Despesas
         );
     }
 }

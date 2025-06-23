@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.WebApp.Extensions;
 using System.ComponentModel.DataAnnotations;
 
@@ -64,10 +65,30 @@ public class DetalhesCategoriaViewModel
 {
     public Guid Id { get; set; }
     public string Titulo { get; set; }
+    public List<DetalhesDespesaViewModel> Despesas { get; set; }
+    public decimal TotalDespesas { get; set; }
 
-    public DetalhesCategoriaViewModel(Guid id, string titulo)
+    public DetalhesCategoriaViewModel(Guid id, string titulo, List<Despesa> despesas)
     {
         Id = id;
         Titulo = titulo;
+
+        Despesas = new List<DetalhesDespesaViewModel>();
+
+        foreach (var d in despesas)
+        {
+            TotalDespesas += d.Valor;
+
+            var detalhesDespesaVM = new DetalhesDespesaViewModel(
+                d.Id,
+                d.Descricao,
+                d.Valor,
+                d.DataOcorencia,
+                d.FormaPagamento,
+                d.Categorias
+            );
+
+            Despesas.Add(detalhesDespesaVM);
+        }
     }
 }

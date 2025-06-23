@@ -126,7 +126,8 @@ public class CategoriaController : Controller
 
         var detalhesVM = new DetalhesCategoriaViewModel(
             id,
-            registroSelecionado.Titulo
+            registroSelecionado.Titulo,
+            registroSelecionado.Despesas
         );
 
         return View(detalhesVM);

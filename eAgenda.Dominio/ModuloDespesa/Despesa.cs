@@ -7,7 +7,7 @@ public class Despesa : EntidadeBase<Despesa>
 {
     public string Descricao { get; set; }
     public decimal Valor { get; set; }
-    public DateTime Data { get; set; }
+    public DateTime DataOcorencia { get; set; }
     public FormaPagamento FormaPagamento { get; set; }
     public List<Categoria> Categorias { get; set; }
 
@@ -21,7 +21,7 @@ public class Despesa : EntidadeBase<Despesa>
         Id = Guid.NewGuid();
         Descricao = descricao;
         Valor = valor;
-        Data = data;
+        DataOcorencia = data;
         FormaPagamento = formaPagamento;
     }
 
@@ -47,7 +47,7 @@ public class Despesa : EntidadeBase<Despesa>
     {
         Descricao = registroEditado.Descricao;
         Valor = registroEditado.Valor;
-        Data = registroEditado.Data;
+        DataOcorencia = registroEditado.DataOcorencia;
         FormaPagamento = registroEditado.FormaPagamento;
     }
 }

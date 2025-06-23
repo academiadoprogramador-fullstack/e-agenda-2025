@@ -18,7 +18,7 @@ public class FormularioDespesaViewModel
 
     [Required(ErrorMessage = "O campo \"Valor\" é obrigatório.")]
     [Range(0, double.MaxValue, ErrorMessage = "O campo \"Valor\" deve conter um valor numérico positivo.")]
-    public decimal Valor { get; set; } = 0m;
+    public decimal Valor { get; set; } = 0.0m;
 
     [Required(ErrorMessage = "O campo \"Forma de Pagamento\" é obrigatório.")]
     public FormaPagamento FormaPagamento { get; set; }

@@ -1,6 +1,8 @@
 ﻿using System.Text.Json.Serialization;
 using System.Text.Json;
 using eAgenda.Dominio.ModuloTarefa;
+using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloDespesa;
 
 namespace eAgenda.Infraestrura.Compartilhado;
 
@@ -10,10 +12,14 @@ public class ContextoDados
     private string arquivoArmazenamento = "dados-e-agenda.json";
 
     public List<Tarefa> Tarefas { get; set; }
+    public List<Categoria> Categorias { get; set; }
+    public List<Despesa> Despesas { get; set; }
 
     public ContextoDados()
     {
         Tarefas = new List<Tarefa>();
+        Categorias = new List<Categoria>();
+        Despesas = new List<Despesa>();
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -59,5 +65,7 @@ public class ContextoDados
         if (contextoArmazenado == null) return;
 
         Tarefas = contextoArmazenado.Tarefas;
+        Categorias = contextoArmazenado.Categorias;
+        Despesas = contextoArmazenado.Despesas;
     }
 }

@@ -5,7 +5,7 @@ namespace eAgenda.Dominio.ModuloTarefa;
 public class Tarefa : EntidadeBase<Tarefa>
 {
     public string Titulo { get; set; }
-    public PrioridadeTarefaEnum Prioridade { get; set; }
+    public PrioridadeTarefa Prioridade { get; set; }
     public DateTime DataCriacao { get; set; }
     public DateTime? DataConclusao { get; set; }
     public List<ItemTarefa> Itens { get; set; }
@@ -38,7 +38,7 @@ public class Tarefa : EntidadeBase<Tarefa>
         Itens = new List<ItemTarefa>();
     }
 
-    public Tarefa(string titulo, PrioridadeTarefaEnum prioridade) : this()
+    public Tarefa(string titulo, PrioridadeTarefa prioridade) : this()
     {
         Id = Guid.NewGuid();
         Titulo = titulo;

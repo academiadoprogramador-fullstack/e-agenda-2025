@@ -164,7 +164,7 @@ public class TarefaController : Controller
     }
 
     [HttpPost, Route("/tarefas/{id:guid}/adicionar-item")]
-    public IActionResult AdicionarPedido(Guid id, string tituloItem)
+    public IActionResult AdicionarItem(Guid id, string tituloItem)
     {
         var tarefaSelecionada = repositorioTarefa.SelecionarTarefaPorId(id);
 

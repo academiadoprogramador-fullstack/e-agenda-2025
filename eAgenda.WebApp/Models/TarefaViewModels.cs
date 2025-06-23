@@ -12,14 +12,14 @@ public abstract class FormularioTarefaViewModel
     public string Titulo { get; set; }
 
     [Required(ErrorMessage = "O campo \"Prioridade\" é obrigatório.")]
-    public PrioridadeTarefaEnum Prioridade { get; set; }
+    public PrioridadeTarefa Prioridade { get; set; }
 }
 
 public class CadastrarTarefaViewModel : FormularioTarefaViewModel
 {
     public CadastrarTarefaViewModel() { }
 
-    public CadastrarTarefaViewModel(string titulo, PrioridadeTarefaEnum prioridade)
+    public CadastrarTarefaViewModel(string titulo, PrioridadeTarefa prioridade)
     {
         Titulo = titulo;
         Prioridade = prioridade;
@@ -32,7 +32,7 @@ public class EditarTarefaViewModel : FormularioTarefaViewModel
 
     public EditarTarefaViewModel() { }
 
-    public EditarTarefaViewModel(Guid id, string titulo, PrioridadeTarefaEnum prioridade)
+    public EditarTarefaViewModel(Guid id, string titulo, PrioridadeTarefa prioridade)
     {
         Id = id;
         Titulo = titulo;
@@ -69,7 +69,7 @@ public class DetalhesTarefaViewModel
 {
     public Guid Id { get; set; }
     public string Titulo { get; set; }
-    public PrioridadeTarefaEnum Prioridade { get; set; }
+    public PrioridadeTarefa Prioridade { get; set; }
     public DateTime DataCriacao { get; set; }
     public DateTime? DataConclusao { get; set; }
     public bool Concluida { get; set; }
@@ -78,7 +78,7 @@ public class DetalhesTarefaViewModel
     public DetalhesTarefaViewModel(
         Guid id,
         string titulo,
-        PrioridadeTarefaEnum prioridade,
+        PrioridadeTarefa prioridade,
         DateTime dataCriacao,
         DateTime? dataConclusao,
         bool concluida,

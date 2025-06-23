@@ -1,6 +1,6 @@
 ﻿namespace eAgenda.Dominio.ModuloTarefa;
 
-public enum PrioridadeTarefaEnum
+public enum PrioridadeTarefa
 {
     Baixa,
     Normal,

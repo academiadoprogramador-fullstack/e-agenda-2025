@@ -24,9 +24,4 @@ public class ItemTarefa
     {
         Concluido = false;
     }
-
-    public override string ToString()
-    {
-        return $"{Titulo}";
-    }
 }

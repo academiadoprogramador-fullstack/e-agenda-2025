@@ -169,12 +169,16 @@ public class DespesaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ExcluirConfirmado(Guid id)
     {
+        var despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id);
+
+        foreach (var cat in despesaSelecionada.Categorias.ToList())
+            despesaSelecionada.RemoverCategoria(cat);
+
         repositorioDespesa.ExcluirRegistro(id);
 
         return RedirectToAction(nameof(Index));
     }
 
-    [HttpGet("detalhes/{id:guid}")]
     public IActionResult Detalhes(Guid id)
     {
         var registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id);

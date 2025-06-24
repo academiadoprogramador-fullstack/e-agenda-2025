@@ -44,12 +44,9 @@ public class CategoriaController : Controller
             if (item.Titulo.Equals(cadastrarVM.Titulo))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe uma categoria registrada com este título.");
-                break;
+                return View(cadastrarVM);
             }
         }
-
-        if (!ModelState.IsValid)
-            return View(cadastrarVM);
 
         var entidade = cadastrarVM.ParaEntidade();
 
@@ -82,12 +79,10 @@ public class CategoriaController : Controller
             if (!item.Id.Equals(id) && item.Titulo.Equals(editarVM.Titulo))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe uma categoria registrada com este título.");
-                break;
+                return View(editarVM);
+
             }
         }
-
-        if (!ModelState.IsValid)
-            return View(editarVM);
 
         var entidadeEditada = editarVM.ParaEntidade();
 

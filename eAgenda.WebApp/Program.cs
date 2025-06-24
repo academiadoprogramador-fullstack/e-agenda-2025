@@ -9,6 +9,7 @@ using eAgenda.Infraestrutura.ModuloCompromisso;
 using eAgenda.Infraestrutura.ModuloContato;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
+using eAgenda.WebApp.ActionFilters;
 
 namespace eAgenda.WebApp;
 
@@ -18,7 +19,10 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        builder.Services.AddControllersWithViews();
+        builder.Services.AddControllersWithViews(options =>
+        {
+            options.Filters.Add<ValidarModeloAttribute>();
+        });
 
         builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));
         builder.Services.AddScoped<IRepositorioContato, RepositorioContato>();

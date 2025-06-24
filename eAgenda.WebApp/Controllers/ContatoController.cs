@@ -44,18 +44,15 @@ public class ContatoController : Controller
             if (item.Nome.Equals(cadastrarVM.Nome))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe um contato registrado com este nome.");
-                break;
+                return View(cadastrarVM);
             }
 
             if (item.Email.Equals(cadastrarVM.Email))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe um contato registrado com este endereço de e-mail.");
-                break;
+                return View(cadastrarVM);
             }
         }
-
-        if (!ModelState.IsValid)
-            return View(cadastrarVM);
 
         var entidade = cadastrarVM.ParaEntidade();
 
@@ -92,18 +89,16 @@ public class ContatoController : Controller
             if (!item.Id.Equals(id) && item.Nome.Equals(editarVM.Nome))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe um contato registrado com este nome.");
-                break;
+                return View(editarVM);
+
             }
 
             if (!item.Id.Equals(id) && item.Email.Equals(editarVM.Email))
             {
                 ModelState.AddModelError("CadastroUnico", "Já existe um contato registrado com este endereço de e-mail.");
-                break;
+                return View(editarVM);
             }
         }
-
-        if (!ModelState.IsValid)
-            return View(editarVM);
 
         var entidadeEditada = editarVM.ParaEntidade();
 

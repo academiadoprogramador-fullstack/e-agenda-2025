@@ -13,7 +13,8 @@ public class ValidarModeloAttribute : ActionFilterAttribute
         {
             var controller = (Controller)filterContext.Controller;
 
-            var viewModel = filterContext.ActionArguments.First().Value;
+            var viewModel = filterContext.ActionArguments
+                .Values.FirstOrDefault(arg => arg?.GetType().Name.EndsWith("ViewModel") ?? default);
 
             filterContext.Result = controller.View(viewModel);
         }

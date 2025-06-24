@@ -4,6 +4,7 @@ using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloContato;
+using eAgenda.Dominio.ModuloCompromisso;
 
 namespace eAgenda.Infraestrura.Compartilhado;
 
@@ -16,6 +17,7 @@ public class ContextoDados
     public List<Categoria> Categorias { get; set; }
     public List<Despesa> Despesas { get; set; }
     public List<Contato> Contatos { get; set; }
+    public List<Compromisso> Compromissos { get; set; }
 
     public ContextoDados()
     {
@@ -23,6 +25,7 @@ public class ContextoDados
         Categorias = new List<Categoria>();
         Despesas = new List<Despesa>();
         Contatos = new List<Contato>();
+        Compromissos = new List<Compromisso>();
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -71,5 +74,6 @@ public class ContextoDados
         Categorias = contextoArmazenado.Categorias;
         Despesas = contextoArmazenado.Despesas;
         Contatos = contextoArmazenado.Contatos;
+        Compromissos = contextoArmazenado.Compromissos;
     }
 }

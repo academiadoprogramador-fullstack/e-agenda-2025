@@ -3,6 +3,7 @@ using System.Text.Json;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
+using eAgenda.Dominio.ModuloContato;
 
 namespace eAgenda.Infraestrura.Compartilhado;
 
@@ -14,12 +15,14 @@ public class ContextoDados
     public List<Tarefa> Tarefas { get; set; }
     public List<Categoria> Categorias { get; set; }
     public List<Despesa> Despesas { get; set; }
+    public List<Contato> Contatos { get; set; }
 
     public ContextoDados()
     {
         Tarefas = new List<Tarefa>();
         Categorias = new List<Categoria>();
         Despesas = new List<Despesa>();
+        Contatos = new List<Contato>();
     }
 
     public ContextoDados(bool carregarDados) : this()
@@ -67,5 +70,6 @@ public class ContextoDados
         Tarefas = contextoArmazenado.Tarefas;
         Categorias = contextoArmazenado.Categorias;
         Despesas = contextoArmazenado.Despesas;
+        Contatos = contextoArmazenado.Contatos;
     }
 }

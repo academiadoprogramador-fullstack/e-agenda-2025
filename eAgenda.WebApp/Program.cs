@@ -1,8 +1,10 @@
 using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrura.Compartilhado;
 using eAgenda.Infraestrutura.ModuloCategoria;
+using eAgenda.Infraestrutura.ModuloContato;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
 
@@ -17,6 +19,7 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));
+        builder.Services.AddScoped<IRepositorioContato, RepositorioContato>();
         builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
         builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();
         builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefa>();

@@ -17,13 +17,7 @@ public class Tarefa : EntidadeBase<Tarefa>
             if (Itens.Count == 0)
                 return default;
 
-            int qtdConcluidos = 0;
-
-            foreach (var item in Itens)
-            {
-                if (item.Concluido)
-                    qtdConcluidos++;
-            }
+            int qtdConcluidos = Itens.Count(i => i.Concluido);
 
             decimal percentualBase = qtdConcluidos / (decimal)Itens.Count * 100;
 

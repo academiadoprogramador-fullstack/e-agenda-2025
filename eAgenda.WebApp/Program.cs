@@ -33,6 +33,11 @@ public class Program
 
         var app = builder.Build();
 
+        if (!app.Environment.IsDevelopment())
+            app.UseExceptionHandler("/erro");
+        else
+            app.UseDeveloperExceptionPage();
+
         app.UseAntiforgery();
         app.UseHttpsRedirection();
         app.UseStaticFiles();

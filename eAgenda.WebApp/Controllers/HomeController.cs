@@ -1,6 +1,4 @@
-using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace eAgenda.WebApp.Controllers;
 

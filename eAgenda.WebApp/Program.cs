@@ -10,6 +10,8 @@ using eAgenda.Infraestrutura.ModuloContato;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
+using Serilog;
+using Serilog.Events;
 
 namespace eAgenda.WebApp;
 
@@ -30,6 +32,20 @@ public class Program
         builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
         builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();
         builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefa>();
+
+        var caminhoAppData = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+
+        var caminhoArquivoLogs = Path.Combine(caminhoAppData, "eAgenda", "erro.log");
+
+        Log.Logger = new LoggerConfiguration()
+            .MinimumLevel.Information()
+            .WriteTo.Console()
+            .WriteTo.File(caminhoArquivoLogs, LogEventLevel.Error)
+            .CreateLogger();
+
+        builder.Logging.ClearProviders();
+
+        builder.Services.AddSerilog();
 
         var app = builder.Build();
 

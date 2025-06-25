@@ -9,16 +9,20 @@ namespace eAgenda.WebApp.Controllers;
 public class CategoriaController : Controller
 {
     private readonly IRepositorioCategoria repositorioCategoria;
+    private readonly ILogger<CategoriaController> logger;
 
-    public CategoriaController(IRepositorioCategoria repositorioCategoria)
+    public CategoriaController(IRepositorioCategoria repositorioCategoria, ILogger<CategoriaController> logger)
     {
         this.repositorioCategoria = repositorioCategoria;
+        this.logger = logger;
     }
 
     [HttpGet]
     public IActionResult Index()
     {
         var registros = repositorioCategoria.SelecionarRegistros();
+
+        logger.LogInformation("{QuantidadeRegistros} registros foram encontrados.", registros.Count);
 
         var visualizarVM = new VisualizarCategoriasViewModel(registros);
 

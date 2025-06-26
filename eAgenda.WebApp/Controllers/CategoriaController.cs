@@ -18,8 +18,6 @@ public class CategoriaController : Controller
     [HttpGet]
     public IActionResult Index()
     {
-        throw new NotImplementedException();
-
         var registros = repositorioCategoria.SelecionarRegistros();
 
         var visualizarVM = new VisualizarCategoriasViewModel(registros);

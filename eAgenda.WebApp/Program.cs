@@ -23,6 +23,7 @@ public class Program
         builder.Services.AddControllersWithViews(options =>
         {
             options.Filters.Add<ValidarModeloAttribute>();
+            options.Filters.Add<LogarAcaoAttribute>();
         });
 
         builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));

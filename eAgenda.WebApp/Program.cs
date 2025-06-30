@@ -9,6 +9,7 @@ using eAgenda.Infraestrutura.ModuloCompromisso;
 using eAgenda.Infraestrutura.ModuloContato;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
+using eAgenda.Infraestrutura.SqlServer;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
 
@@ -27,7 +28,7 @@ public class Program
         });
 
         builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));
-        builder.Services.AddScoped<IRepositorioContato, RepositorioContato>();
+        builder.Services.AddScoped<IRepositorioContato, RepositorioContatoEmSql>();
         builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromisso>();
         builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
         builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();

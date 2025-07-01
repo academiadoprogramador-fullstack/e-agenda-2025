@@ -6,7 +6,6 @@ using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrura.Compartilhado;
 using eAgenda.Infraestrutura.ModuloCategoria;
 using eAgenda.Infraestrutura.ModuloCompromisso;
-using eAgenda.Infraestrutura.ModuloContato;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
 using eAgenda.Infraestrutura.SqlServer;

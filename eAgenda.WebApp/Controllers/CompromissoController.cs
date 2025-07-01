@@ -86,7 +86,7 @@ public class CompromissoController : Controller
             registroSelecionado.Tipo,
             registroSelecionado.Local,
             registroSelecionado.Link,
-            registroSelecionado.Contato.Id,
+            registroSelecionado.Contato?.Id,
             contatosDisponiveis
         );
 
@@ -139,8 +139,6 @@ public class CompromissoController : Controller
 
         if (registroSelecionado is null)
             return RedirectToAction(nameof(Index));
-
-        registroSelecionado.Contato.RemoverCompromisso(registroSelecionado);
 
         repositorioCompromisso.ExcluirRegistro(id);
 

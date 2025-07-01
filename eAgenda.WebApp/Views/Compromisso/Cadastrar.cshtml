@@ -58,7 +58,9 @@
 
                     <div class="form-group d-grid gap-2 mt-3">
                         <label asp-for="ContatoId" class="control-label fs-5">Contato:</label>
-                        <select asp-for="ContatoId" asp-items="@Model.ContatosDisponiveis" class="form-select"></select>
+                        <select asp-for="ContatoId" asp-items="@Model.ContatosDisponiveis" class="form-select">
+                            <option value="">Nenhum contato selecionado</option>
+                        </select>
                         <span asp-validation-for="ContatoId" class="text-danger"></span>
                     </div>
 

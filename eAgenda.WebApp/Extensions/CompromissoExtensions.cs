@@ -27,10 +27,10 @@ public static class CompromissoExtensions
             formularioVM.Data,
             formularioVM.HoraInicio,
             formularioVM.HoraTermino,
-            contatoSelecionado!,
             formularioVM.Tipo,
             formularioVM.Local,
-            formularioVM.Link
+            formularioVM.Link,
+            contatoSelecionado
         );
     }
 
@@ -42,10 +42,10 @@ public static class CompromissoExtensions
                 compromisso.Data,
                 compromisso.HoraInicio,
                 compromisso.HoraTermino,
-                compromisso.Contato.Nome,
                 compromisso.Tipo,
                 compromisso.Local,
-                compromisso.Link
+                compromisso.Link,
+                compromisso.Contato?.Nome
         );
     }
 }

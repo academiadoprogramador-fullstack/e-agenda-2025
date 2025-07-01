@@ -11,7 +11,7 @@ public class FormularioCompromissoViewModel
     [Required(ErrorMessage = "O campo \"Assunto\" é obrigatório.")]
     [MinLength(2, ErrorMessage = "O campo \"Assunto\" precisa conter ao menos 2 caracteres.")]
     [MaxLength(100, ErrorMessage = "O campo \"Assunto\" precisa conter no máximo 100 caracteres.")]
-    public string Assunto { get; set; }
+    public string Assunto { get; set; } = string.Empty;
 
     [Required(ErrorMessage = "O campo \"Data\" é obrigatório.")]
     public DateTime Data { get; set; } = DateTime.Now;
@@ -68,7 +68,7 @@ public class EditarCompromissoViewModel : FormularioCompromissoViewModel
         TipoCompromisso tipo,
         string? local,
         string? link,
-        Guid contatoId,
+        Guid? contatoId,
         List<Contato> contatos
     ) : this()
     {
@@ -123,10 +123,10 @@ public class DetalhesCompromissoViewModel
     public DateTime Data { get; set; }
     public TimeSpan HoraInicio { get; set; }
     public TimeSpan HoraTermino { get; set; }
-    public string Contato { get; set; }
     public TipoCompromisso Tipo { get; set; }
     public string? Local { get; set; }
     public string? Link { get; set; }
+    public string? Contato { get; set; }
 
     public DetalhesCompromissoViewModel(
         Guid id,
@@ -134,10 +134,10 @@ public class DetalhesCompromissoViewModel
         DateTime data,
         TimeSpan horaInicio,
         TimeSpan horaTermino,
-        string contato,
         TipoCompromisso tipo,
         string? local, 
-        string? link
+        string? link,
+        string? contato
     )
     {
         Id = id;
@@ -145,9 +145,9 @@ public class DetalhesCompromissoViewModel
         Data = data;
         HoraInicio = horaInicio;
         HoraTermino = horaTermino;
-        Contato = contato;
         Tipo = tipo;
         Local = local;
         Link = link;
+        Contato = contato;
     }
 }

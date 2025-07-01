@@ -1,7 +1,7 @@
 ﻿using eAgenda.Dominio.ModuloContato;
 using Microsoft.Data.SqlClient;
 
-namespace eAgenda.Infraestrutura.SqlServer;
+namespace eAgenda.Infraestrutura.SqlServer.ModuloContato;
 
 public class RepositorioContatoEmSql : IRepositorioContato
 {

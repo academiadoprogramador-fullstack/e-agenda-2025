@@ -1,16 +1,19 @@
+using Dapper;
 using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrura.Compartilhado;
+using eAgenda.Infraestrutura.DapperOrm.ModuloCompromisso;
+using eAgenda.Infraestrutura.DapperOrm.ModuloContato;
 using eAgenda.Infraestrutura.ModuloCategoria;
 using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
-using eAgenda.Infraestrutura.SqlServer.ModuloCompromisso;
 using eAgenda.Infraestrutura.SqlServer.ModuloContato;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
+using System.Data;
 
 namespace eAgenda.WebApp;
 
@@ -27,11 +30,13 @@ public class Program
         });
 
         builder.Services.AddScoped<ContextoDados>((_) => new ContextoDados(true));
-        builder.Services.AddScoped<IRepositorioContato, RepositorioContatoEmSql>();
-        builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmSql>();
+        builder.Services.AddScoped<IRepositorioContato, RepositorioContatoComDapper>();
+        builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoComDapper>();
         builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
         builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();
         builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefa>();
+
+        SqlMapper.AddTypeHandler(new TimeSpanConverter());
 
         builder.Services.AddSerilogConfig(builder.Logging);
 
@@ -50,5 +55,18 @@ public class Program
         app.MapDefaultControllerRoute();
 
         app.Run();
+    }
+}
+
+public class TimeSpanConverter : SqlMapper.TypeHandler<TimeSpan>
+{
+    public override TimeSpan Parse(object value)
+    {
+        return TimeSpan.FromTicks((long)value);
+    }
+
+    public override void SetValue(IDbDataParameter parameter, TimeSpan value)
+    {
+        parameter.Value = value;
     }
 }

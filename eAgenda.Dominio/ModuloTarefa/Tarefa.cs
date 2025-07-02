@@ -55,30 +55,25 @@ public class Tarefa : EntidadeBase<Tarefa>
 
     public ItemTarefa? ObterItem(Guid idItem)
     {
-        foreach (var i in Itens)
-        {
-            if (idItem.Equals(i.Id))
-                return i;
-        }
-
-        return null;
+        return Itens.Find(i => i.Id.Equals(idItem));
     }
 
-    public bool AdicionarItem(string titulo)
+    public ItemTarefa AdicionarItem(string titulo)
     {
-        var item = new ItemTarefa(titulo);
-
-        foreach (var i in Itens)
-        {
-            if (item.Id == i.Id)
-                return false;
-        }
+        var item = new ItemTarefa(titulo, this);
 
         Itens.Add(item);
 
         MarcarPendente();
 
-        return true;
+        return item;
+    }
+
+    public ItemTarefa AdicionarItem(ItemTarefa item)
+    {
+        Itens.Add(item);
+
+        return item;
     }
 
     public bool RemoverItem(ItemTarefa item)

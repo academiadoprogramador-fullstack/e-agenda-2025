@@ -30,6 +30,8 @@ public class RepositorioTarefa : IRepositorioTarefa
 
         tarefaSelecionada.AtualizarRegistro(tarefaEditada);
 
+        contexto.Salvar();
+
         return true;
     }
 
@@ -42,6 +44,25 @@ public class RepositorioTarefa : IRepositorioTarefa
 
         registros.Remove(registroSelecionado);
 
+        contexto.Salvar();
+
+        return true;
+    }
+
+    public void AdicionarItem(ItemTarefa item)
+    {
+        contexto.Salvar();
+    }
+
+    public bool AtualizarItem(ItemTarefa itemAtualizado)
+    {
+        contexto.Salvar();
+
+        return true;
+    }
+
+    public bool RemoverItem(ItemTarefa item)
+    {
         contexto.Salvar();
 
         return true;

@@ -9,12 +9,10 @@ namespace eAgenda.WebApp.Controllers;
 [Route("tarefas")]
 public class TarefaController : Controller
 {
-    private readonly ContextoDados contextoDados;
     private readonly IRepositorioTarefa repositorioTarefa;
 
-    public TarefaController(ContextoDados contextoDados, IRepositorioTarefa repositorioTarefa)
+    public TarefaController(IRepositorioTarefa repositorioTarefa)
     {
-        this.contextoDados = contextoDados;
         this.repositorioTarefa = repositorioTarefa;
     }
 
@@ -144,7 +142,7 @@ public class TarefaController : Controller
         else
             tarefaSelecionada.Concluir();
 
-        contextoDados.Salvar();
+        repositorioTarefa.Editar(id, tarefaSelecionada);
 
         return RedirectToAction(nameof(Index));
     }
@@ -170,9 +168,9 @@ public class TarefaController : Controller
         if (tarefaSelecionada is null)
             return RedirectToAction(nameof(Index));
 
-        tarefaSelecionada.AdicionarItem(tituloItem);
+        var itemAdicionado = tarefaSelecionada.AdicionarItem(tituloItem);
 
-        contextoDados.Salvar();
+        repositorioTarefa.AdicionarItem(itemAdicionado);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 
@@ -197,7 +195,7 @@ public class TarefaController : Controller
         else
             tarefaSelecionada.MarcarItemPendente(itemSelecionado);
 
-        contextoDados.Salvar();
+        repositorioTarefa.AtualizarItem(itemSelecionado);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 
@@ -219,7 +217,7 @@ public class TarefaController : Controller
 
         tarefaSelecionada.RemoverItem(itemSelecionado);
 
-        contextoDados.Salvar();
+        repositorioTarefa.RemoverItem(itemSelecionado);
 
         var gerenciarItensViewModel = new GerenciarItensViewModel(tarefaSelecionada);
 

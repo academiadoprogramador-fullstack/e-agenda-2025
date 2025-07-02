@@ -1,3 +1,9 @@
+-- Script de criação de tabelas do projeto e-Agenda
+-- TODO: Adicionar tabela de categorias
+-- TODO: Adicionar tabela de despesas
+
+BEGIN
+
 CREATE TABLE [dbo].[TBContato]
 (
 	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
@@ -38,5 +44,7 @@ CREATE TABLE [dbo].[TBItemTarefa]
 	[Titulo] NVARCHAR(100) NOT NULL, 
 	[Concluido] BIT NOT NULL, 
 	[Tarefa_Id] UNIQUEIDENTIFIER NOT NULL, 
-	CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY (Tarefa_Id) REFERENCES [TBTarefa]([Id])
+	CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY ([Tarefa_Id]) REFERENCES [dbo].[TBTarefa]([Id])
 );
+
+END;

@@ -106,8 +106,6 @@ public class RepositorioCompromissoComHeranca : RepositorioBase<Compromisso>
 
     public override Compromisso? SelecionarRegistroPorId(Guid idRegistro)
     {
-        SqlMapper.AddTypeHandler(new TimeSpanConverter());       
-
         using var conexaoComBanco = new SqlConnection(connectionString);
 
         var parametros = new { Id = idRegistro };
@@ -124,9 +122,7 @@ public class RepositorioCompromissoComHeranca : RepositorioBase<Compromisso>
     }
 
     public override List<Compromisso> SelecionarRegistros()
-    {
-        
-
+    {        
         using var conexaoComBanco = new SqlConnection(connectionString);
 
         return conexaoComBanco

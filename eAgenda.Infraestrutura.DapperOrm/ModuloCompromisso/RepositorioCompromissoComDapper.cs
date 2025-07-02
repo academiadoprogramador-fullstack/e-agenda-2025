@@ -94,8 +94,6 @@ public class RepositorioCompromissoComDapper : IRepositorioCompromisso
 
     public Compromisso? SelecionarRegistroPorId(Guid idRegistro)
     {
-        SqlMapper.AddTypeHandler(new TimeSpanConverter());
-
         var sql =
             @"SELECT
                 CP.[ID],
@@ -131,15 +129,13 @@ public class RepositorioCompromissoComDapper : IRepositorioCompromisso
                     cp.Contato = ct;
                     return cp;
                 },
-                splitOn: "CONTATO_ID",
+                splitOn: "ID",
                 param: parametros
             ).FirstOrDefault();
     }
 
     public List<Compromisso> SelecionarRegistros()
     {
-        SqlMapper.AddTypeHandler(new TimeSpanConverter());
-
         var sql =
            @"SELECT
                 CP.[ID],

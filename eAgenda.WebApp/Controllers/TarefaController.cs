@@ -1,5 +1,4 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
-using eAgenda.Infraestrura.Compartilhado;
 using eAgenda.WebApp.Extensions;
 using eAgenda.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;

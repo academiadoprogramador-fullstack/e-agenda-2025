@@ -9,6 +9,7 @@ using eAgenda.Infraestrutura.ModuloDespesa;
 using eAgenda.Infraestrutura.ModuloTarefa;
 using eAgenda.Infraestrutura.SqlServer.ModuloCompromisso;
 using eAgenda.Infraestrutura.SqlServer.ModuloContato;
+using eAgenda.Infraestrutura.SqlServer.ModuloTarefa;
 using eAgenda.WebApp.ActionFilters;
 using eAgenda.WebApp.DependencyInjection;
 
@@ -31,7 +32,7 @@ public class Program
         builder.Services.AddScoped<IRepositorioCompromisso, RepositorioCompromissoEmSql>();
         builder.Services.AddScoped<IRepositorioCategoria, RepositorioCategoria>();
         builder.Services.AddScoped<IRepositorioDespesa, RepositorioDespesa>();
-        builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefa>();
+        builder.Services.AddScoped<IRepositorioTarefa, RepositorioTarefaEmSql>();
 
         builder.Services.AddSerilogConfig(builder.Logging);
 

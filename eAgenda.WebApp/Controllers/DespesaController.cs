@@ -125,17 +125,10 @@ public class DespesaController : Controller
             return View(editarVM);
         }
 
-        // Obtém dados editados
         var despesaEditada = editarVM.ParaEntidade();
+
         var categoriasSelecionadas = editarVM.CategoriasSelecionadas;
 
-        var despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id);
-
-        // Remove as categorias anteriores da despesa
-        foreach (var categoria in despesaSelecionada.Categorias.ToList())
-            despesaSelecionada.RemoverCategoria(categoria);
-
-        // Adiciona as categorias selecionadas
         if (categoriasSelecionadas is not null)
         {
             foreach (var idSelecionado in categoriasSelecionadas)
@@ -144,14 +137,13 @@ public class DespesaController : Controller
                 {
                     if (categoriaDisponivel.Id.Equals(idSelecionado))
                     {
-                        despesaSelecionada.RegistarCategoria(categoriaDisponivel);
+                        despesaEditada.RegistarCategoria(categoriaDisponivel);
                         break;
                     }
                 }
             }
         }
 
-        // Atualiza os dados da despesa selecionada
         repositorioDespesa.EditarRegistro(id, despesaEditada);
 
         return RedirectToAction(nameof(Index));

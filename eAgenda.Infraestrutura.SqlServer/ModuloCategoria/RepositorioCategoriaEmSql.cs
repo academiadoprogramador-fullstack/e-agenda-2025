@@ -1,4 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
+using eAgenda.Dominio.ModuloDespesa;
 using Microsoft.Data.SqlClient;
 
 namespace eAgenda.Infraestrutura.SqlServer.ModuloCategoria;
@@ -110,6 +111,9 @@ public class RepositorioCategoriaEmSql : IRepositorioCategoria
         if (leitor.Read())
             registro = ConverterParaCategoria(leitor);
 
+        if (registro is not null)
+            CarregarDespesas(registro);
+
         return registro;
     }
 
@@ -146,11 +150,25 @@ public class RepositorioCategoriaEmSql : IRepositorioCategoria
 
     private Categoria ConverterParaCategoria(SqlDataReader leitor)
     {
-        var registro = new Categoria(
-            Convert.ToString(leitor["TITULO"])!
-        );
+        var registro = new Categoria
+        {
+            Id = Guid.Parse(leitor["ID"].ToString()!),
+            Titulo = Convert.ToString(leitor["TITULO"])!
+        };
 
-        registro.Id = Guid.Parse(leitor["ID"].ToString()!);
+        return registro;
+    }
+
+    private Despesa ConverterParaDespesa(SqlDataReader leitor)
+    {
+        var registro = new Despesa
+        {
+            Id = Guid.Parse(leitor["ID"].ToString()!),
+            Descricao = Convert.ToString(leitor["DESCRICAO"])!,
+            Valor = Convert.ToDecimal(leitor["VALOR"])!,
+            DataOcorencia = Convert.ToDateTime(leitor["DATAOCORRENCIA"])!,
+            FormaPagamento = (FormaPagamento)leitor["FORMAPAGAMENTO"]!,
+        };
 
         return registro;
     }
@@ -159,5 +177,42 @@ public class RepositorioCategoriaEmSql : IRepositorioCategoria
     {
         comando.Parameters.AddWithValue("ID", entidade.Id);
         comando.Parameters.AddWithValue("TITULO", entidade.Titulo);
+    }
+
+    private void CarregarDespesas(Categoria categoria)
+    {
+        var sqlSelecionarDespesasDaCategoria =
+            @"SELECT
+                D.[ID],
+                D.[DESCRICAO],
+                D.[VALOR],
+                D.[DATAOCORRENCIA],
+                D.[FORMAPAGAMENTO]
+            FROM
+                [TBDESPESA] AS D INNER JOIN
+                [TBDESPESA_TBCATEGORIA] AS DC
+            ON
+                D.[ID] = DC.[DESPESA_ID]
+            WHERE
+                DC.[CATEGORIA_ID] = @CATEGORIA_ID";
+
+        SqlConnection conexaoComBanco = new SqlConnection(connectionString);
+
+        SqlCommand comandoSelecao = new SqlCommand(sqlSelecionarDespesasDaCategoria, conexaoComBanco);
+
+        comandoSelecao.Parameters.AddWithValue("CATEGORIA_ID", categoria.Id);
+
+        conexaoComBanco.Open();
+
+        SqlDataReader leitorCategoria = comandoSelecao.ExecuteReader();
+
+        while (leitorCategoria.Read())
+        {
+            var despesa = ConverterParaDespesa(leitorCategoria);
+
+            despesa.RegistarCategoria(categoria);
+        }
+
+        conexaoComBanco.Close();
     }
 }

@@ -1,6 +1,4 @@
 -- Script de criação de tabelas do projeto e-Agenda
--- TODO: Adicionar tabela de categorias
--- TODO: Adicionar tabela de despesas
 
 BEGIN
 
@@ -60,6 +58,11 @@ CREATE TABLE [dbo].[TBDespesa]
 	[Valor] DECIMAL(18, 2) NOT NULL,
 	[DataOcorrencia] DATETIME2 NOT NULL,
 	[FormaPagamento] INT NOT NULL,
+);
+
+CREATE TABLE [dbo].[TBDespesa_TBCategoria] (
+    [Despesa_Id]   UNIQUEIDENTIFIER NOT NULL,
+    [Categoria_Id] UNIQUEIDENTIFIER NOT NULL
 );
 
 END;

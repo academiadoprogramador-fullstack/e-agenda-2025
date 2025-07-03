@@ -44,7 +44,13 @@ CREATE TABLE [dbo].[TBItemTarefa]
 	[Titulo] NVARCHAR(100) NOT NULL, 
 	[Concluido] BIT NOT NULL, 
 	[Tarefa_Id] UNIQUEIDENTIFIER NOT NULL, 
-	CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY ([Tarefa_Id]) REFERENCES [dbo].[TBTarefa]([Id])
+		CONSTRAINT [FK_TBItemTarefa_TBTarefa] FOREIGN KEY ([Tarefa_Id]) REFERENCES [dbo].[TBTarefa]([Id])
+);
+
+CREATE TABLE [dbo].[TBCategoria]
+(
+	[Id] UNIQUEIDENTIFIER NOT NULL PRIMARY KEY, 
+	[Titulo] NVARCHAR(100) NOT NULL, 
 );
 
 END;

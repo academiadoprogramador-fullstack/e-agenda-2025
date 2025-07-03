@@ -6,7 +6,7 @@ namespace eAgenda.Infraestrutura.SqlServer.ModuloCategoria;
 public class RepositorioCategoriaEmSql : IRepositorioCategoria
 {
     private readonly string connectionString =
-        "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaTest;Integrated Security=True";
+        "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaDb;Integrated Security=True";
 
     public void CadastrarRegistro(Categoria novoRegistro)
     {

@@ -6,7 +6,7 @@ namespace eAgenda.Infraestrutura.SqlServer.ModuloDespesa;
 public class RepositorioDespesaEmSql : IRepositorioDespesa
 {
     private readonly string connectionString =
-      "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaTest;Integrated Security=True";
+      "Data Source=(LocalDB)\\MSSQLLocalDB;Initial Catalog=eAgendaDb;Integrated Security=True";
 
     public void CadastrarRegistro(Despesa novoRegistro)
     {

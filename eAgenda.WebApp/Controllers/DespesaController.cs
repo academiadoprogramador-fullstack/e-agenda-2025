@@ -62,7 +62,6 @@ public class DespesaController : Controller
 
         var despesa = cadastrarVM.ParaEntidade();
 
-        // Adiciona as categorias selecionadas à despesa
         var categoriasSelecionadas = cadastrarVM.CategoriasSelecionadas;
 
         if (categoriasSelecionadas is not null)
@@ -91,6 +90,9 @@ public class DespesaController : Controller
         var categoriasDisponiveis = repositorioCategoria.SelecionarRegistros();
 
         var registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id);
+
+        if (registroSelecionado is null)
+            return RedirectToAction(nameof(Index));
 
         var editarVM = new EditarDespesaViewModel(
             id,
@@ -160,7 +162,13 @@ public class DespesaController : Controller
     {
         var registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id);
 
-        var excluirVM = new ExcluirDespesaViewModel(registroSelecionado.Id, registroSelecionado.Descricao);
+        if (registroSelecionado is null)
+            return RedirectToAction(nameof(Index));
+
+        var excluirVM = new ExcluirDespesaViewModel(
+            registroSelecionado.Id,
+            registroSelecionado.Descricao
+        );
 
         return View(excluirVM);
     }
@@ -169,10 +177,13 @@ public class DespesaController : Controller
     [ValidateAntiForgeryToken]
     public IActionResult ExcluirConfirmado(Guid id)
     {
-        var despesaSelecionada = repositorioDespesa.SelecionarRegistroPorId(id);
+        var registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id);
 
-        foreach (var cat in despesaSelecionada.Categorias.ToList())
-            despesaSelecionada.RemoverCategoria(cat);
+        if (registroSelecionado is null)
+            return RedirectToAction(nameof(Index));
+
+        foreach (var cat in registroSelecionado.Categorias.ToList())
+            registroSelecionado.RemoverCategoria(cat);
 
         repositorioDespesa.ExcluirRegistro(id);
 
@@ -182,6 +193,9 @@ public class DespesaController : Controller
     public IActionResult Detalhes(Guid id)
     {
         var registroSelecionado = repositorioDespesa.SelecionarRegistroPorId(id);
+
+        if (registroSelecionado is null)
+            return RedirectToAction(nameof(Index));
 
         var detalhesVM = new DetalhesDespesaViewModel(
             id,

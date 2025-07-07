@@ -51,6 +51,21 @@ public class RepositorioCategoriaEmSql : RepositorioBaseEmSql<Categoria>, IRepos
 	    FROM 
 		    [TBCATEGORIA]";
 
+    protected string SqlSelecionarDespesasDaCategoria => @"
+        SELECT
+            D.[ID],
+            D.[DESCRICAO],
+            D.[VALOR],
+            D.[DATAOCORRENCIA],
+            D.[FORMAPAGAMENTO]
+        FROM
+            [TBDESPESA] AS D INNER JOIN
+            [TBDESPESA_TBCATEGORIA] AS DC
+        ON
+            D.[ID] = DC.[DESPESA_ID]
+        WHERE
+            DC.[CATEGORIA_ID] = @CATEGORIA_ID";
+
     public override Categoria? SelecionarRegistroPorId(Guid idRegistro)
     {
         var registro = base.SelecionarRegistroPorId(idRegistro);
@@ -104,23 +119,8 @@ public class RepositorioCategoriaEmSql : RepositorioBaseEmSql<Categoria>, IRepos
 
     private void CarregarDespesas(Categoria categoria)
     {
-        var sqlSelecionarDespesasDaCategoria =
-            @"SELECT
-                D.[ID],
-                D.[DESCRICAO],
-                D.[VALOR],
-                D.[DATAOCORRENCIA],
-                D.[FORMAPAGAMENTO]
-            FROM
-                [TBDESPESA] AS D INNER JOIN
-                [TBDESPESA_TBCATEGORIA] AS DC
-            ON
-                D.[ID] = DC.[DESPESA_ID]
-            WHERE
-                DC.[CATEGORIA_ID] = @CATEGORIA_ID";
-
         var comandoSelecao = conexaoComBanco.CreateCommand();
-        comandoSelecao.CommandText = sqlSelecionarDespesasDaCategoria;
+        comandoSelecao.CommandText = SqlSelecionarDespesasDaCategoria;
 
         comandoSelecao.AdicionarParametro("CATEGORIA_ID", categoria.Id);
 

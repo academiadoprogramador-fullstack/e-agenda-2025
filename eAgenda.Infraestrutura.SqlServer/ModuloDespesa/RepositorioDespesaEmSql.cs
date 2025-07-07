@@ -1,7 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCategoria;
 using eAgenda.Dominio.ModuloDespesa;
 using eAgenda.Infraestrutura.SqlServer.Compartilhado;
-using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace eAgenda.Infraestrutura.SqlServer.ModuloDespesa;
@@ -66,6 +65,35 @@ public class RepositorioDespesaEmSql : RepositorioBaseEmSql<Despesa>, IRepositor
             [FORMAPAGAMENTO]
         FROM 
             [TBDESPESA]";
+
+    protected string SqlAdicionarCategoriaDespesa => @"
+        INSERT INTO [TBDESPESA_TBCATEGORIA]
+        (
+            [DESPESA_ID],
+            [CATEGORIA_ID]
+        )
+        VALUES
+        (
+            @DESPESA_ID,
+            @CATEGORIA_ID
+        )";
+
+    protected string SqlRemoverCategoriasDespesa => @"
+        DELETE FROM [TBDESPESA_TBCATEGORIA]
+        WHERE 
+            [DESPESA_ID] = @DESPESA_ID";
+
+    protected string SqlCarregarCategoriasDespesa => @"
+        SELECT
+            CAT.[ID],
+            CAT.[TITULO]
+        FROM
+            [TBCATEGORIA] AS CAT INNER JOIN
+            [TBDESPESA_TBCATEGORIA] AS DC
+        ON
+            CAT.[ID] = DC.[CATEGORIA_ID]
+        WHERE
+            DC.[DESPESA_ID] = @DESPESA_ID";
 
     public override void CadastrarRegistro(Despesa novoRegistro)
     {
@@ -144,24 +172,12 @@ public class RepositorioDespesaEmSql : RepositorioBaseEmSql<Despesa>, IRepositor
 
     private void AdicionarCategorias(Despesa despesa)
     {
-        var sql = @"
-            INSERT INTO [TBDESPESA_TBCATEGORIA]
-            (
-                [DESPESA_ID],
-                [CATEGORIA_ID]
-            )
-            VALUES
-            (
-                @DESPESA_ID,
-                @CATEGORIA_ID
-            )";
-
         conexaoComBanco.Open();
 
         foreach (var cat in despesa.Categorias)
         {
             var comando = conexaoComBanco.CreateCommand();
-            comando.CommandText = sql;
+            comando.CommandText = SqlAdicionarCategoriaDespesa;
 
             comando.AdicionarParametro("DESPESA_ID", despesa.Id);
             comando.AdicionarParametro("CATEGORIA_ID", cat.Id);
@@ -174,43 +190,26 @@ public class RepositorioDespesaEmSql : RepositorioBaseEmSql<Despesa>, IRepositor
 
     private void RemoverCategorias(Guid idDespesa)
     {
-        var sql = @"
-            DELETE FROM [TBDESPESA_TBCATEGORIA]
-            WHERE [DESPESA_ID] = @DESPESA_ID";
-
-        conexaoComBanco.Open();
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sql;
+        comando.CommandText = SqlRemoverCategoriasDespesa;
 
         comando.AdicionarParametro("DESPESA_ID", idDespesa);
+        
+        conexaoComBanco.Open();
 
         comando.ExecuteNonQuery();
 
         conexaoComBanco.Close();
-
     }
 
     private void CarregarCategorias(Despesa despesa)
     {
-        var sqlCarregarCategorias = @"
-            SELECT
-                CAT.[ID],
-                CAT.[TITULO]
-            FROM
-                [TBCATEGORIA] AS CAT INNER JOIN
-                [TBDESPESA_TBCATEGORIA] AS DC
-            ON
-                CAT.[ID] = DC.[CATEGORIA_ID]
-            WHERE
-                DC.[DESPESA_ID] = @DESPESA_ID";
-
-        conexaoComBanco.Open();
-
-        using var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlCarregarCategorias;
+        var comando = conexaoComBanco.CreateCommand();
+        comando.CommandText = SqlCarregarCategoriasDespesa;
 
         comando.AdicionarParametro("DESPESA_ID", despesa.Id);
+
+        conexaoComBanco.Open();
 
         var leitor = comando.ExecuteReader();
 

@@ -1,6 +1,5 @@
 ﻿using eAgenda.Dominio.ModuloTarefa;
 using eAgenda.Infraestrutura.SqlServer.Compartilhado;
-using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace eAgenda.Infraestrutura.SqlServer.ModuloTarefa;
@@ -69,47 +68,96 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
             [CONCLUIDA]
         FROM 
             [TBTAREFA]";
- 
+
+    protected string SqlSelecionarTarefasPendentes => @"
+        SELECT
+            [ID],
+            [TITULO],
+            [PRIORIDADE],
+            [DATACRIACAO],
+            [DATACONCLUSAO],
+            [CONCLUIDA]
+        FROM 
+            [TBTAREFA]
+        WHERE
+            [CONCLUIDA] = 0";
+
+    protected string SqlSelecionarTarefasConcluidas => @"
+        SELECT
+            [ID],
+            [TITULO],
+            [PRIORIDADE],
+            [DATACRIACAO],
+            [DATACONCLUSAO],
+            [CONCLUIDA]
+        FROM 
+            [TBTAREFA]
+        WHERE
+            [CONCLUIDA] = 1";
+
+    protected string SqlAdicionarItemTarefa => @"
+        INSERT INTO [TBITEMTAREFA]
+        (
+            [ID],
+            [TITULO],
+            [CONCLUIDO],
+            [TAREFA_ID]
+        )
+        VALUES
+        (
+            @ID,
+            @TITULO,
+            @CONCLUIDO,
+            @TAREFA_ID
+        );";
+
+    protected string SqlAtualizarItemTarefa => @"
+        UPDATE [TBITEMTAREFA]	
+        SET
+            [TITULO] = @TITULO,
+            [CONCLUIDO] = @CONCLUIDO,
+            [TAREFA_ID] = @TAREFA_ID
+        WHERE
+            [ID] = @ID";
+
+    protected string SqlRemoverItemTarefa => @"
+        DELETE FROM [TBITEMTAREFA]
+        WHERE [ID] = @ID";
+
+    protected string SqlSelecionarItensTarefa => @"
+        SELECT 
+            [ID],
+            [TITULO],
+            [CONCLUIDO],
+            [TAREFA_ID]
+        FROM 
+            [TBITEMTAREFA]
+        WHERE 
+            [TAREFA_ID] = @TAREFA_ID";
+
+    protected string SqlRemoverItensTarefa => @"
+        DELETE FROM [TBITEMTAREFA]
+        WHERE 
+            [TAREFA_ID] = @TAREFA_ID";
+
     public void AdicionarItem(ItemTarefa item)
     {
-        const string sqlAdicionarItemTarefa = @"
-            INSERT INTO [TBITEMTAREFA]
-            (
-                [ID],
-                [TITULO],
-                [CONCLUIDO],
-                [TAREFA_ID]
-            )
-            VALUES
-            (
-                @ID,
-                @TITULO,
-                @CONCLUIDO,
-                @TAREFA_ID
-            );";
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlAdicionarItemTarefa;
+        comando.CommandText = SqlAdicionarItemTarefa;
+
         ConfigurarParametrosItemTarefa(item, comando);
 
         conexaoComBanco.Open();
+
         comando.ExecuteNonQuery();
+
         conexaoComBanco.Close();
     }
 
     public bool AtualizarItem(ItemTarefa itemAtualizado)
     {
-        const string sqlEditar = @"
-            UPDATE [TBITEMTAREFA]	
-            SET
-                [TITULO] = @TITULO,
-                [CONCLUIDO] = @CONCLUIDO,
-                [TAREFA_ID] = @TAREFA_ID
-            WHERE
-                [ID] = @ID";
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlEditar;
+        comando.CommandText = SqlAtualizarItemTarefa;
 
         ConfigurarParametrosItemTarefa(itemAtualizado, comando);
 
@@ -124,12 +172,8 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
 
     public bool RemoverItem(ItemTarefa item)
     {
-        const string sqlExcluir = @"
-            DELETE FROM [TBITEMTAREFA]
-            WHERE [ID] = @ID";
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlExcluir;
+        comando.CommandText = SqlRemoverItemTarefa;
 
         comando.AdicionarParametro("ID", item.Id);
 
@@ -144,7 +188,8 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
 
     public override bool ExcluirRegistro(Guid idTarefa)
     {
-        ExcluirItensTarefa(idTarefa);
+        RemoverItensTarefa(idTarefa);
+
         return base.ExcluirRegistro(idTarefa);
     }
     
@@ -160,31 +205,19 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
 
     public List<Tarefa> SelecionarTarefasPendentes()
     {
-        const string sqlSelecionarTarefasPendentes = @"
-            SELECT
-                [ID],
-                [TITULO],
-                [PRIORIDADE],
-                [DATACRIACAO],
-                [DATACONCLUSAO],
-                [CONCLUIDA]
-            FROM 
-                [TBTAREFA]
-            WHERE
-                [CONCLUIDA] = 0";
+        var tarefasPendentes = new List<Tarefa>();
 
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlSelecionarTarefasPendentes;
+        comando.CommandText = SqlSelecionarTarefasPendentes;
 
         conexaoComBanco.Open();
 
         var leitorTarefa = comando.ExecuteReader();
 
-        var tarefasPendentes = new List<Tarefa>();
-
         while (leitorTarefa.Read())
         {
             var tarefa = ConverterParaRegistro(leitorTarefa);
+
             tarefasPendentes.Add(tarefa);
         }
 
@@ -195,31 +228,20 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
 
     public List<Tarefa> SelecionarTarefasConcluidas()
     {
-        const string sqlSelecionarTarefasConcluidas = @"
-            SELECT
-                [ID],
-                [TITULO],
-                [PRIORIDADE],
-                [DATACRIACAO],
-                [DATACONCLUSAO],
-                [CONCLUIDA]
-            FROM 
-                [TBTAREFA]
-            WHERE
-                [CONCLUIDA] = 1";
+        var tarefasConcluidas = new List<Tarefa>();
 
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlSelecionarTarefasConcluidas;
+        comando.CommandText = SqlSelecionarTarefasConcluidas;
 
         conexaoComBanco.Open();
 
         var leitorTarefa = comando.ExecuteReader();
 
-        var tarefasConcluidas = new List<Tarefa>();
 
         while (leitorTarefa.Read())
         {
             var tarefa = ConverterParaRegistro(leitorTarefa);
+
             tarefasConcluidas.Add(tarefa);
         }
 
@@ -291,19 +313,9 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
 
     private void CarregarItensTarefa(Tarefa tarefa)
     {
-        const string sqlSelecionarItensTarefa = @"
-            SELECT 
-                [ID],
-                [TITULO],
-                [CONCLUIDO],
-                [TAREFA_ID]
-            FROM 
-                [TBITEMTAREFA]
-            WHERE 
-                [TAREFA_ID] = @TAREFA_ID";
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlSelecionarItensTarefa;
+        comando.CommandText = SqlSelecionarItensTarefa;
+        
         comando.AdicionarParametro("TAREFA_ID", tarefa.Id);
 
         conexaoComBanco.Open();
@@ -313,20 +325,17 @@ public class RepositorioTarefaEmSql : RepositorioBaseEmSql<Tarefa>, IRepositorio
         while (leitorItemTarefa.Read())
         {
             var itemTarefa = ConverterParaItemTarefa(leitorItemTarefa, tarefa);
+
             tarefa.AdicionarItem(itemTarefa);
         }
 
         conexaoComBanco.Close();
     }
 
-    private void ExcluirItensTarefa(Guid idTarefa)
+    private void RemoverItensTarefa(Guid idTarefa)
     {
-        const string sqlExcluirItensTarefa = @"
-            DELETE FROM [TBITEMTAREFA]
-            WHERE [TAREFA_ID] = @TAREFA_ID";
-
         var comando = conexaoComBanco.CreateCommand();
-        comando.CommandText = sqlExcluirItensTarefa;
+        comando.CommandText = SqlRemoverItensTarefa;
 
         comando.AdicionarParametro("TAREFA_ID", idTarefa);
 

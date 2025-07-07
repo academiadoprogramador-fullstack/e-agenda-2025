@@ -81,15 +81,15 @@ public class RepositorioContatoEmSql : RepositorioBaseEmSql<Contato>, IRepositor
 
     protected override Contato ConverterParaRegistro(IDataReader leitor)
     {
-        var contato = new Contato(
-            Convert.ToString(leitor["NOME"])!,
-            Convert.ToString(leitor["TELEFONE"])!,
-            Convert.ToString(leitor["EMAIL"])!,
-            Convert.ToString(leitor["EMPRESA"]),
-            Convert.ToString(leitor["CARGO"])
-        );
-
-        contato.Id = Guid.Parse(leitor["ID"].ToString()!);
+        var contato = new Contato
+        {
+            Id = Guid.Parse(leitor["ID"].ToString()!),
+            Nome = Convert.ToString(leitor["NOME"])!,
+            Telefone = Convert.ToString(leitor["TELEFONE"])!,
+            Email = Convert.ToString(leitor["EMAIL"])!,
+            Empresa = Convert.ToString(leitor["EMPRESA"]),
+            Cargo = Convert.ToString(leitor["CARGO"])
+        };
 
         return contato;
     }

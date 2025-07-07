@@ -1,7 +1,6 @@
 ﻿using eAgenda.Dominio.ModuloCompromisso;
 using eAgenda.Dominio.ModuloContato;
 using eAgenda.Infraestrutura.SqlServer.Compartilhado;
-using Microsoft.Data.SqlClient;
 using System.Data;
 
 namespace eAgenda.Infraestrutura.SqlServer.ModuloCompromisso;

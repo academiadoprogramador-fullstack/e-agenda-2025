@@ -2,9 +2,13 @@
 
 namespace eAgenda.Infraestrutura.SqlServer.Compartilhado;
 
-public static class IDBCommandExtensions
+public static class IDbCommandExtensions
 {
-    public static void AdicionarParametro(this IDbCommand comando, string nome, object valor)
+    public static void AdicionarParametro(
+        this IDbCommand comando,
+        string nome,
+        object valor
+    )
     {
         var parametro = comando.CreateParameter();
         parametro.ParameterName = nome;

@@ -11,70 +11,45 @@ public class RepositorioCategoriaEmSql : RepositorioBaseEmSql<Categoria>, IRepos
     {
     }
 
-    protected override string SqlInserir
-    {
-        get
-        {
-            return @"INSERT INTO [TBCATEGORIA]
-                    (
-                        [ID],
-                        [TITULO]
-                    )
-                    VALUES
-                    (
-                        @ID,
-                        @TITULO
-                    );";
-        }
-    }
-    
-    protected override string SqlEditar
-    {
-        get
-        {
-            return @"UPDATE [TBCATEGORIA]	
-		            SET
-			            [TITULO] = @TITULO
-		            WHERE
-			            [ID] = @ID";
-        }
-    }
-    
-    protected override string SqlExcluir
-    {
-        get
-        {
-            return @"DELETE FROM [TBCATEGORIA]
-		            WHERE
-			            [ID] = @ID";
-        }
-    }
+    protected override string SqlInserir => @"
+        INSERT INTO [TBCATEGORIA]
+        (
+            [ID],
+            [TITULO]
+        )
+        VALUES
+        (
+            @ID,
+            @TITULO
+        );";
 
-    protected override string SqlSelecionarPorId
-    {
-        get
-        {
-            return @"SELECT 
-		                [ID], 
-		                [TITULO]
-	                FROM 
-		                [TBCATEGORIA]
-                    WHERE
-                        [ID] = @ID";
-        }
-    }
+    protected override string SqlEditar => @"
+        UPDATE [TBCATEGORIA]	
+		SET
+			[TITULO] = @TITULO
+		WHERE
+			[ID] = @ID";
 
-    protected override string SqlSelecionarTodos
-    {
-        get
-        {
-            return @"SELECT 
-		                [ID], 
-		                [TITULO]
-	                FROM 
-		                [TBCATEGORIA]";
-        }
-    }
+    protected override string SqlExcluir => @"
+        DELETE FROM [TBCATEGORIA]
+		WHERE
+			[ID] = @ID";
+
+    protected override string SqlSelecionarPorId => @"
+        SELECT 
+		    [ID], 
+		    [TITULO]
+	    FROM 
+		    [TBCATEGORIA]
+        WHERE
+            [ID] = @ID";
+
+    protected override string SqlSelecionarTodos => @"
+        SELECT 
+		    [ID], 
+		    [TITULO]
+	    FROM 
+		    [TBCATEGORIA]";
 
     public override Categoria? SelecionarRegistroPorId(Guid idRegistro)
     {
